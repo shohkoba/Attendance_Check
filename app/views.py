@@ -1,3 +1,4 @@
+from genericpath import exists
 from django.shortcuts import render, get_object_or_404, redirect
 #from django.utils import timezone
 from datetime import date
@@ -26,10 +27,10 @@ def list(request):
     childs = Child.objects.all()
     attendances = []
     for c in childs:
-        attendances.append(Attendance.objects.filter(child = c).latest('date'))
+        if Attendance.objects.filter(child = c).exists():
+            attendances.append(Attendance.objects.filter(child = c).latest('date'))
     
-    #attendances = Attendance.objects.filter(date = timezone.now()).order_by('child')
-    return render(request, 'app/list.html', {'attendances': attendances, 'today':date.today()})
+    return render(request, 'app/list.html', {'childs': childs, 'attendances': attendances, 'today':date.today()})
 
 def respon(request, pk):
     attendance = get_object_or_404(Attendance, pk=pk)
@@ -43,5 +44,16 @@ def respon(request, pk):
         form = ResponForm(instance=attendance)
     return render(request, 'app/respon.html', {'form': form, 'name': attendance.child.name})
 
-def cfm_hist(request):
-    return render()
+def cfm_hist_list(request):
+    childs = Child.objects.all()
+    return render(request, 'app/cfm_hist_list.html', {'childs': childs})
+
+def cfm_hist(request, pk):
+    child = get_object_or_404(Child, pk=pk)
+    if Attendance.objects.filter(child=child).exists():
+        attendances = Attendance.objects.filter(child=child).order_by('-date')
+        latest = attendances.latest('date')
+    else: # 出欠登録を1度もしていない場合
+        attendances = None
+        latest = None
+    return render(request, 'app/cfm_hist.html', {'child':child, 'attendances':attendances, 'latest': latest, 'today':date.today()})

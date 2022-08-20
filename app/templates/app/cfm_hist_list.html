@@ -1,0 +1,17 @@
+{% extends 'app/_base.html' %}
+
+{% block content %}
+    <div>
+        <h2>本日の返信および出欠履歴
+    </div>
+    <table border="1">
+        <tr>
+            <th>名前</th>
+        </tr>
+        {% for child in childs %}
+            <tr>
+                <td><a href="{% url 'cfm_hist' pk=child.pk %}">{{child.name}}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

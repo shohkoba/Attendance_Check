@@ -7,5 +7,6 @@ urlpatterns = [
     path('guardian/resister/', views.resister, name='resister'),
     path('list/', views.list, name='list'),
     path('respon/<int:pk>/', views.respon, name='respon'),
-    path('guardian/cfm_hist/', views.cfm_hist, name='cfm_hist'),
+    path('guardian/cfm_hist_list/', views.cfm_hist_list, name='cfm_hist_list'),
+    path('guardian/cfm_hist/<int:pk>/', views.cfm_hist, name='cfm_hist'),
 ]

@@ -4,27 +4,34 @@
     <div>
         <h2>本日({% now "F" %}{% now "j" %}日)の出欠一覧</h2>
         <p>凡例　○：出席，×：欠席，-：登録なし</p>
-        園児の名前から返信できます．
     </div>
     <table border="1">
         <tr>
             <th>名前</th>
             <th>出欠</th>
             <th>欠席理由</th>
-            <th>保育士からの返信内容</th>
+            <th>返信</th>
+            <th>履歴</th>
         </tr>
         {% for attendance in attendances %}
             <tr>
-                <td><a href="{% url 'respon' pk=attendance.pk %}">{{attendance.child.name}}</a></td>
-                {% if attendance.date != today %}
-                    <td>-</td>
-                {% elif attendance.attendance == 1%}
-                    <td>○</td>
+                {% if attendance.date == today%}
+                    <td>{{attendance.child.name}}</td>
+                    {% if attendance.attendance == 1%}
+                        <td>○</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+                    <td>{{attendance.reason}}</td>
+                    <td><a href="{% url 'respon' pk=attendance.pk %}">返信</a></td>
+                    <td><a href="{% url 'cfm_hist' pk=attendance.child.pk %}">履歴</a></td>
                 {% else %}
-                    <td>×</td>
+                    <td>{{attendance.child.name}}</td>
+                    <td>-</td>
+                    <td></td>
+                    <td>返信</a></td>
+                    <td>履歴</td>
                 {% endif %}
-                <td>{{attendance.reason}}</td>
-                <td>{{attendance.respon}}</td>
             </tr>
         {% endfor %}
     </table>

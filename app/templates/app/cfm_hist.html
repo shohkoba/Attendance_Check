@@ -1,0 +1,46 @@
+{% extends 'app/_base.html' %}
+
+{% block content %}
+    <div>
+        <h2>{{child.name}}くん/ちゃん</h2>
+    </div>
+    <div>
+        <h3>本日({% now "F" %}{% now "j" %}日)の返信</h3>
+        {% if latest.date == today %}
+            {% if latest.respon %}
+                <p>{{latest.respon}}</p>
+            {% else %}
+                <p>本日の返信はまだありません．</p>
+            {% endif %}
+        {% else %}
+            <p>本日の出欠登録をしていません．</p>
+        {% endif %}
+    </div>
+    <div>
+        <h3>出欠履歴</h3>
+        <table border="1">
+            <tr>
+                <th>日付</th>
+                <th>出欠</th>
+                <th>欠席理由</th>
+                <th>保育士からの返信内容</th>
+            </tr>
+            {% for attendance in attendances %}
+                <tr>
+                    <td>{{attendance.date}}</td>
+                    {% if attendance.attendance == 1%}
+                        <td>○</td>
+                    {% else %}
+                        <td>×</td>
+                    {% endif %}
+                    <td>{{attendance.reason}}</td>
+                    {% if attendance.respon %}
+                        <td>{{attendance.respon}}</td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
