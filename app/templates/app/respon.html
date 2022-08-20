@@ -1,0 +1,9 @@
+{% extends 'app/_base.html' %}
+
+{% block content %}
+    <h2>{{name}}くん/ちゃんの保護者の方への返信</h2>
+    <form method="POST" class="respon-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
